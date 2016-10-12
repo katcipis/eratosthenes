@@ -45,3 +45,9 @@ func TestSequentialSieve(t *testing.T) {
 		})
 	}
 }
+
+func BenchmarkSequentialSieve(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		sieve(100000000)
+	}
+}
