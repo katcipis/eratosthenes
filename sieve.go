@@ -1,7 +1,7 @@
 package sieve
 
 func nextPrime(n int, prime int, possiblePrimes []bool) int {
-	for i := prime; i < n; i += prime {
+	for i := prime; i <= n; i += prime {
 		possiblePrimes[i] = true
 	}
 	for i := prime + 1; i <= n; i++ {
@@ -16,7 +16,7 @@ func sieve(n int) []int {
 	possiblePrimes := make([]bool, n+1)
 	prime := 2
 	results := []int{}
-	for prime < n {
+	for prime <= n {
 		results = append(results, prime)
 		prime = nextPrime(n, prime, possiblePrimes)
 	}
