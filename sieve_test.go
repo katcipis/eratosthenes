@@ -14,10 +14,34 @@ func assertEqualInts(t *testing.T, a []int, b []int) {
 	}
 }
 
+type sieveTestCase struct {
+	name   string
+	n      int
+	result []int
+}
+
 func TestSequentialSieve(t *testing.T) {
-	expectedResult := []int{
-		2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
+	cases := []sieveTestCase{
+		sieveTestCase{
+			name: "simple",
+			n:    30,
+			result: []int{
+				2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
+			},
+		},
+		sieveTestCase{
+			name: "nIsPrime",
+			n:    29,
+			result: []int{
+				2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
+			},
+		},
 	}
-	result := sieve(30)
-	assertEqualInts(t, expectedResult, result)
+
+	for _, testCase := range cases {
+		t.Run(testCase.name, func(t *testing.T) {
+			result := sieve(testCase.n)
+			assertEqualInts(t, testCase.result, result)
+		})
+	}
 }
