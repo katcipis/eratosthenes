@@ -1,4 +1,4 @@
-package sieve
+package eratosthenes
 
 func nextPrime(n int, prime int, possiblePrimes []bool) int {
 	for i := prime; i <= n; i += prime {
@@ -12,7 +12,7 @@ func nextPrime(n int, prime int, possiblePrimes []bool) int {
 	return n + 1
 }
 
-func sieve(n int) []int {
+func Sequential(n int) []int {
 	possiblePrimes := make([]bool, n+1)
 	prime := 2
 	results := []int{}
