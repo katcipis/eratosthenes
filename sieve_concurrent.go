@@ -32,19 +32,19 @@ func Concurrent(n int) []int {
 	// This algorithm will create O(N) goroutines and channels
 
 	primes := []int{}
-	currentPrime := 2
-	currentSequence := sequence(currentPrime)
+	prime := 2
+	primegenerator := sequence(prime)
 
-	for currentPrime <= n {
-		currentPrime = <-currentSequence
-		if currentPrime > n {
+	for {
+		prime = <-primegenerator
+		if prime > n {
 			break
 		}
-		currentSequence = filterNotMultiplesOf(
-			currentPrime,
-			currentSequence,
+		primegenerator = filterNotMultiplesOf(
+			prime,
+			primegenerator,
 		)
-		primes = append(primes, currentPrime)
+		primes = append(primes, prime)
 	}
 
 	return primes
