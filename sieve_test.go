@@ -29,6 +29,16 @@ type sieveFunc func(int) []int
 func testSieve(t *testing.T, sieve sieveFunc) {
 	cases := []sieveTestCase{
 		sieveTestCase{
+			name:   "noPrime",
+			n:      1,
+			result: []int{},
+		},
+		sieveTestCase{
+			name:   "onePrime",
+			n:      2,
+			result: []int{2},
+		},
+		sieveTestCase{
 			name: "simple",
 			n:    30,
 			result: []int{
