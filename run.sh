@@ -1,3 +1,3 @@
 #! /bin/env nash
 
-go test -race .
+go test -timeout=10s -race .
