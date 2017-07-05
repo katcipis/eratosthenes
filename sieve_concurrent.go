@@ -30,6 +30,7 @@ func filterNotMultiplesOf(n int, seq <-chan int) <-chan int {
 
 func Concurrent(n int) []int {
 	// This algorithm will create O(N) goroutines and channels
+	// It will be a chain of filter channels fed by the first sequence generator
 
 	primes := []int{}
 	prime := 2
