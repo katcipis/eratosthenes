@@ -1,6 +1,10 @@
-package sieve
+package eratosthenes_test
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/katcipis/eratosthenes"
+)
 
 func assertEqualInts(t *testing.T, a []int, b []int) {
 	if len(a) != len(b) {
@@ -20,8 +24,20 @@ type sieveTestCase struct {
 	result []int
 }
 
-func TestSequentialSieve(t *testing.T) {
+type sieveFunc func(int) []int
+
+func testSieve(t *testing.T, sieve sieveFunc) {
 	cases := []sieveTestCase{
+		sieveTestCase{
+			name:   "noPrime",
+			n:      1,
+			result: []int{},
+		},
+		sieveTestCase{
+			name:   "onePrime",
+			n:      2,
+			result: []int{2},
+		},
 		sieveTestCase{
 			name: "simple",
 			n:    30,
@@ -48,6 +64,6 @@ func TestSequentialSieve(t *testing.T) {
 
 func BenchmarkSequentialSieve(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		sieve(100000000)
+		eratosthenes.Sequential(100000000)
 	}
 }
