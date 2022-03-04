@@ -1,19 +1,20 @@
-struct Primes<I: Iterator> {
-    iter: I
+struct Primes {
+    iter: Box<dyn Iterator<Item=u32>>,
 }
 
-impl<I: Iterator> Primes<I> {
-    fn new(iter: I) -> Primes<I> {
-        Primes { iter }
+impl Primes {
+    fn new() -> Primes {
+        Primes { iter : Box::new(NaturalNumbers::new(2)) }
     }
 }
 
-impl<I: Iterator> Iterator for Primes<I>
-{
-    type Item = I::Item;
+impl Iterator for Primes {
+    type Item = u32;
 
-    fn next(&mut self) -> Option<I::Item> {
-        self.iter.next()
+    fn next(&mut self) -> Option<Self::Item> {
+        let val: u32 = self.iter.next().expect("numbers stream should be infinite");
+        self.iter = Box::new(self.iter.filter(|x| x % val != 0));
+        Some(val)
     }
 }
 
@@ -58,19 +59,19 @@ mod tests {
         assert_eq!(nums.next(), Some(102));
     }
 
-    //#[test]
-    //fn primes_generation() {
-        //let mut primes = Primes::new();
+    #[test]
+    fn primes_generation() {
+        let mut primes = Primes::new();
 
-        //assert_eq!(primes.next(), Some(2));
-        //assert_eq!(primes.next(), Some(3));
-        //assert_eq!(primes.next(), Some(5));
-        //assert_eq!(primes.next(), Some(7));
-        //assert_eq!(primes.next(), Some(11));
-        //assert_eq!(primes.next(), Some(13));
-        //assert_eq!(primes.next(), Some(17));
-        //assert_eq!(primes.next(), Some(19));
-        //assert_eq!(primes.next(), Some(23));
-        //assert_eq!(primes.next(), Some(29));
-    //}
+        assert_eq!(primes.next(), Some(2));
+        assert_eq!(primes.next(), Some(3));
+        assert_eq!(primes.next(), Some(5));
+        assert_eq!(primes.next(), Some(7));
+        assert_eq!(primes.next(), Some(11));
+        assert_eq!(primes.next(), Some(13));
+        assert_eq!(primes.next(), Some(17));
+        assert_eq!(primes.next(), Some(19));
+        assert_eq!(primes.next(), Some(23));
+        assert_eq!(primes.next(), Some(29));
+    }
 }
