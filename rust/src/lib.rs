@@ -1,21 +1,20 @@
-struct Primes {
-    iter: Box<dyn Iterator<Item=u32>>,
-}
+fn primes(n: u32) -> Vec<u32> {
+    let mut vec: Vec<u32> = Vec::new();
+    // Did lose a few hours with how to have an iterator that incrementally
+    // chains more and more filters. This is the only thing that worked:
+    //
+    // - https://users.rust-lang.org/t/multiple-staggered-filters-on-an-iterator/60959/4
+    //
+    // The learning curve for this stuff is steep as fuck x_x.
+    let mut iter: Box<dyn Iterator<Item = u32> + '_> = Box::new(NaturalNumbers::new(2));
 
-impl Primes {
-    fn new() -> Primes {
-        Primes { iter : Box::new(NaturalNumbers::new(2)) }
+    for _ in 0..n {
+        let val = iter.next().expect("unexpected EOS");
+        vec.push(val);
+        iter = Box::new(iter.filter(move |x| x % val != 0));
     }
-}
 
-impl Iterator for Primes {
-    type Item = u32;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        let val: u32 = self.iter.next().expect("numbers stream should be infinite");
-        self.iter = Box::new(self.iter.filter(move |x| x % val != 0));
-        Some(val)
-    }
+    vec
 }
 
 struct NaturalNumbers {
@@ -61,17 +60,17 @@ mod tests {
 
     #[test]
     fn primes_generation() {
-        let mut primes = Primes::new();
+        let p = primes(10);
 
-        assert_eq!(primes.next(), Some(2));
-        assert_eq!(primes.next(), Some(3));
-        assert_eq!(primes.next(), Some(5));
-        assert_eq!(primes.next(), Some(7));
-        assert_eq!(primes.next(), Some(11));
-        assert_eq!(primes.next(), Some(13));
-        assert_eq!(primes.next(), Some(17));
-        assert_eq!(primes.next(), Some(19));
-        assert_eq!(primes.next(), Some(23));
-        assert_eq!(primes.next(), Some(29));
+        assert_eq!(p[0], 2);
+        assert_eq!(p[1], 3);
+        assert_eq!(p[2], 5);
+        assert_eq!(p[3], 7);
+        assert_eq!(p[4], 11);
+        assert_eq!(p[5], 13);
+        assert_eq!(p[6], 17);
+        assert_eq!(p[7], 19);
+        assert_eq!(p[8], 23);
+        assert_eq!(p[9], 29);
     }
 }
