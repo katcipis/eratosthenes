@@ -1,22 +1,21 @@
-//struct Primes {
-    //stream: &mut dyn Iterator<Item=u32>,
-//}
+struct Primes<I: Iterator> {
+    iter: I
+}
 
-//impl Primes {
-    //fn new() -> Primes {
-        //Primes { stream: NaturalNumbers::new(2) }
-    //}
-//}
+impl<I: Iterator> Primes<I> {
+    fn new(iter: I) -> Primes<I> {
+        Primes { iter }
+    }
+}
 
-//impl Iterator for Primes {
-    //type Item = u32;
+impl<I: Iterator> Iterator for Primes<I>
+{
+    type Item = I::Item;
 
-    //fn next(&mut self) -> Option<Self::Item> {
-        //let val = self.stream.next();
-        //self.stream = self.stream.filter(|x| x % val != 0);
-        //Some(val)
-    //}
-//}
+    fn next(&mut self) -> Option<I::Item> {
+        self.iter.next()
+    }
+}
 
 struct NaturalNumbers {
     cur: u32,
