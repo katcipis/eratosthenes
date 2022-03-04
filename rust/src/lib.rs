@@ -13,7 +13,7 @@ impl Iterator for Primes {
 
     fn next(&mut self) -> Option<Self::Item> {
         let val: u32 = self.iter.next().expect("numbers stream should be infinite");
-        self.iter = Box::new(self.iter.filter(|x| x % val != 0));
+        self.iter = Box::new(self.iter.filter(move |x| x % val != 0));
         Some(val)
     }
 }
